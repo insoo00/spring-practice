@@ -1,5 +1,6 @@
 package basic.springbasic;
 
+import basic.springbasic.aop.TimeTraceAop;
 import basic.springbasic.repository.*;
 import basic.springbasic.service.MemberService;
 import jakarta.persistence.EntityManager;
@@ -19,5 +20,10 @@ public class SpringConfig {
     @Bean
     public MemberService memberService() {
         return new MemberService(memberRepository);
+    }
+
+    @Bean
+    public TimeTraceAop timeTraceAop() {
+        return new TimeTraceAop();
     }
 }
