@@ -5,7 +5,11 @@ import hello.servletjsp.web.frontcontroller.MyView;
 import hello.servletjsp.web.frontcontroller.v3.controller.MemberFormControllerV3;
 import hello.servletjsp.web.frontcontroller.v3.controller.MemberListControllerV3;
 import hello.servletjsp.web.frontcontroller.v3.controller.MemberSaveControllerV3;
+import hello.servletjsp.web.frontcontroller.v4.controller.MemberFormControllerV4;
+import hello.servletjsp.web.frontcontroller.v4.controller.MemberListControllerV4;
+import hello.servletjsp.web.frontcontroller.v4.controller.MemberSaveControllerV4;
 import hello.servletjsp.web.frontcontroller.v5.adapter.ControllerV3HandlerAdapter;
+import hello.servletjsp.web.frontcontroller.v5.adapter.ControllerV4HandlerAdapter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -21,7 +25,7 @@ import java.util.Map;
 @WebServlet(name = "frontControllerServletV5", urlPatterns = "/front-controller/v5/*")
 public class FrontControllerServletV5 extends HttpServlet {
 
-    private final Map<String, Object> handlerMapping = new HashMap<>();
+    private final Map<String, Object> handlerMappingMap = new HashMap<>();
     private final List<MyHandlerAdapter> handlerAdapters = new ArrayList<>();
 
     public FrontControllerServletV5() {
@@ -30,13 +34,18 @@ public class FrontControllerServletV5 extends HttpServlet {
     }
 
     private void initHandlerMapping() {
-        handlerMapping.put("/front-controller/v5/v3/members/new-form", new MemberFormControllerV3());
-        handlerMapping.put("/front-controller/v5/v3/members/save", new MemberSaveControllerV3());
-        handlerMapping.put("/front-controller/v5/v3/members", new MemberListControllerV3());
+        handlerMappingMap.put("/front-controller/v5/v3/members/new-form", new MemberFormControllerV3());
+        handlerMappingMap.put("/front-controller/v5/v3/members/save", new MemberSaveControllerV3());
+        handlerMappingMap.put("/front-controller/v5/v3/members", new MemberListControllerV3());
+
+        handlerMappingMap.put("/front-controller/v5/v4/members/new-form", new MemberFormControllerV4());
+        handlerMappingMap.put("/front-controller/v5/v4/members/save", new MemberSaveControllerV4());
+        handlerMappingMap.put("/front-controller/v5/v4/members", new MemberListControllerV4());
     }
 
-    private boolean initHandlerAdapters() {
-        return handlerAdapters.add(new ControllerV3HandlerAdapter());
+    private void initHandlerAdapters() {
+        handlerAdapters.add(new ControllerV3HandlerAdapter());
+        handlerAdapters.add(new ControllerV4HandlerAdapter());
     }
 
     @Override
@@ -59,7 +68,7 @@ public class FrontControllerServletV5 extends HttpServlet {
 
     private Object getHandler(HttpServletRequest req) {
         String requestURI = req.getRequestURI();
-        return handlerMapping.get(requestURI);
+        return handlerMappingMap.get(requestURI);
     }
 
     private MyHandlerAdapter getHandlerAdapter(Object handler) {
