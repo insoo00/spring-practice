@@ -21,13 +21,6 @@ import java.util.List;
 public class ValidationItemControllerV3 {
 
     private final ItemRepository itemRepository;
-    private final ItemValidator itemValidator;
-
-    @InitBinder
-    public void init(WebDataBinder dataBinder) {
-        log.info("init binder {}", dataBinder);
-        dataBinder.addValidators(itemValidator);
-    }
 
     @GetMapping
     public String items(Model model) {
@@ -50,7 +43,7 @@ public class ValidationItemControllerV3 {
     }
 
     @PostMapping("/add")
-    public String addItemV6(@Validated @ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String addItem(@Validated @ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
         //검증 실패하면 다시 입력 폼으로
         if (bindingResult.hasErrors()) {
