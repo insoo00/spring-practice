@@ -32,11 +32,9 @@ public class FormItemController {
     }
 
     @GetMapping("/add")
-    public String addItem(@ModelAttribute Item item, RedirectAttributes redirectAttributes) {
-        Item savedItem = itemRepository.save(item);
-        redirectAttributes.addAttribute("itemId", savedItem.getId());
-        redirectAttributes.addAttribute("status", true);
-        return "redirect:/form/items/{itemId}";
+    public String addItem(Model model) {
+        model.addAttribute("item", new Item());
+        return "form/addForm";
     }
 
     @GetMapping("/{itemId}/edit")
